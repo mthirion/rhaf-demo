@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-producer-config-sr
+  labels:
+    app: kafka-producer-sr
+data:
+  KAFKA_BOOTSTRAP_SERVERS: my-cluster-kafka-bootstrap:9094
+  PRODUCER_TICK_FREQUENCY: "10000"
