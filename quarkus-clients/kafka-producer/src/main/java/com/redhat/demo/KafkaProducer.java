@@ -1,15 +1,14 @@
 package com.redhat.demo;
 
-import java.lang.invoke.MethodHandles;
 import java.time.Duration;
 
 import javax.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
-import org.jboss.logging.Logger;
 
 import io.opentelemetry.context.Context;
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.reactive.messaging.TracingMetadata;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
@@ -17,8 +16,6 @@ import io.smallrye.reactive.messaging.kafka.OutgoingKafkaRecord;
 
 @ApplicationScoped
 public class KafkaProducer {
-
-    private static final Logger LOGGER = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
     private static Long lastKey = 0L;
     private static final Object lock = new Object();
@@ -35,14 +32,14 @@ public class KafkaProducer {
                         try {
                             Thread.sleep(3000L);
                         } catch (InterruptedException e) {
-                            LOGGER.warn("Thread Interrupted", e);
+                            Log.warn("Thread Interrupted", e);
                             Thread.currentThread().interrupt();
                         }
                     synchronized (lock) {
                         lastKey++;
                     }
 
-                    LOGGER.info("Generating message key: " + lastKey);
+                    Log.infof("Generating message key: %s", lastKey);
 
                     KafkaRecord<Long, String> kafkaRecord = KafkaRecord.of(lastKey, "demo message " + lastKey);
                     TracingMetadata tracingMetadata = TracingMetadata.withCurrent(Context.current());
