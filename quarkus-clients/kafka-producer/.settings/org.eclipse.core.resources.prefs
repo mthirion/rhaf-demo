@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
+encoding//target/generated-sources/avdl=UTF-8
+encoding//target/generated-sources/avpr=UTF-8
+encoding//target/generated-sources/avsc=UTF-8
+encoding//target/generated-test-sources/avdl=UTF-8
+encoding//target/generated-test-sources/avpr=UTF-8
+encoding//target/generated-test-sources/avsc=UTF-8
 encoding/<project>=UTF-8
