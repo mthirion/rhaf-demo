@@ -1,0 +1,55 @@
+kind: KafkaUser
+apiVersion: kafka.strimzi.io/v1beta2
+metadata:
+  name: quarkus-consumer
+  labels:
+    strimzi.io/cluster: my-cluster
+  namespace: kafka-dev
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: event
+          patternType: literal
+        operation: Describe
+        host: '*'
+      - resource:
+          type: topic
+          name: event
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: event
+          patternType: literal
+        operation: Create
+        host: '*'
+      - resource:
+          type: topic
+          name: event-sr
+          patternType: literal
+        operation: Describe
+        host: '*'       
+      - resource:
+          type: topic
+          name: event-sr
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: group
+          name: kafka-consumer
+          patternType: literal
+        operation: Read
+        host: '*'        
+      - resource:
+          type: topic
+          name: event-sr
+          patternType: literal
+        operation: Create
+        host: '*'      

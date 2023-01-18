@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    common.k8s.elastic.co/type: kibana
+    kibana.k8s.elastic.co/name: kibana
+  name: kibana
+  namespace: elastic-system
+spec:
+  port:
+    targetPort: https
+  to:
+    kind: Service
+    name: kibana-kb-http
+    weight: 100
+  wildcardPolicy: None

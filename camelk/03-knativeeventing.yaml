@@ -1,0 +1,10 @@
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  finalizers:
+  - knative-eventing-openshift
+  - knativeeventings.operator.knative.dev
+  name: knative-eventing
+  namespace: knative-eventing
+spec:
+  registry: {}

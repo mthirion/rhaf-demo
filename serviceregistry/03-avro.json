@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "Message",
+  "namespace": "com.redhat.demo.avro.schema",
+  "doc": "Schema for a Message.",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "long",
+      "doc": "Message timestamp."
+    },
+    {
+      "name": "content",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "doc": "Message content."
+    }
+  ]
+}

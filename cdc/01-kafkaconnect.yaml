@@ -1,0 +1,75 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: debezium-metrics
+  labels:
+    app: strimzi
+data:
+  debezium-metrics-config.yml: |
+    startDelaySeconds: 0
+    ssl: false
+    lowercaseOutputName: false
+    lowercaseOutputLabelNames: false
+    rules:
+    - pattern : "kafka.connect<type=connect-worker-metrics>([^:]+):"
+      name: "kafka_connect_worker_metrics_$1"
+    - pattern : "kafka.connect<type=connect-metrics, client-id=([^:]+)><>([^:]+)"
+      name: "kafka_connect_metrics_$2"
+      labels:
+        client: "$1"
+    - pattern: "debezium.([^:]+)<type=connector-metrics, context=([^,]+), server=([^,]+), key=([^>]+)><>RowsScanned"
+      name: "debezium_metrics_RowsScanned"
+      labels:
+        plugin: "$1"
+        name: "$3"
+        context: "$2"
+        table: "$4"
+    - pattern: "debezium.([^:]+)<type=connector-metrics, context=([^,]+), server=([^>]+)>([^:]+)"
+      name: "debezium_metrics_$4"
+      labels:
+        plugin: "$1"
+        name: "$3"
+        context: "$2"
+---
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+  name: my-connect-cluster1
+  namespace: kafka-dev
+spec:
+  authentication:
+    passwordSecret:
+      password: password
+      secretName: debezium-user
+    type: scram-sha-512
+    username: debezium-user
+  bootstrapServers: my-cluster-kafka-bootstrap:9094
+  build:
+    output:
+      image: image-registry.openshift-image-registry.svc:5000/kafka-dev/debezium-connect-postgres:1.9
+      type: docker
+    plugins:
+    - artifacts:
+      - type: tgz
+        url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/1.9.0.Final/debezium-connector-postgres-1.9.0.Final-plugin.tar.gz
+      name: postgres
+  metricsConfig:
+    type: jmxPrometheusExporter
+    valueFrom:
+      configMapKeyRef:
+        name: debezium-metrics
+        key: debezium-metrics-config.yml      
+  config:
+    jmxhost: 0.0.0.0
+    jmxport: 9999          
+    config.storage.replication.factor: -1
+    config.storage.topic: connect-cluster-configs
+    group.id: connect-cluster
+    offset.storage.replication.factor: -1
+    offset.storage.topic: connect-cluster-offsets
+    status.storage.replication.factor: -1
+    status.storage.topic: connect-cluster-status
+  replicas: 1
+  version: 3.3.1

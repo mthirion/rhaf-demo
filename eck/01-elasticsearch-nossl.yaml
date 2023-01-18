@@ -1,0 +1,60 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  annotations:
+    common.k8s.elastic.co/controller-version: 1.9.1
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"elasticsearch.k8s.elastic.co/v1","kind":"Elasticsearch","metadata":{"annotations":{"common.k8s.elastic.co/controller-version":"1.9.1","elasticsearch.k8s.elastic.co/cluster-uuid":"VD1_pTsxQHWTj7R2ElhyZg"},"name":"elasticsearch","namespace":"elastic-system"},"spec":{"auth":{},"http":{"service":{"metadata":{},"spec":{}},"tls":{"certificate":{}}},"monitoring":{"logs":{},"metrics":{}},"nodeSets":[{"config":{"node.store.allow_mmap":false,"xpack.security.enabled":false,"xpack.security.transport.ssl.verification_mode":"none"},"count":1,"name":"default","podTemplate":{"metadata":{"creationTimestamp":null},"spec":{"containers":[{"name":"elasticsearch","readinessProbe":{"exec":{"command":["bash","-c","echo 'true'"]},"failureThreshold":3,"initialDelaySeconds":10,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":5},"resources":{"limits":{"cpu":"1","memory":"6Gi"},"requests":{"cpu":"1","memory":"6Gi"}}}]}}}],"transport":{"service":{"metadata":{},"spec":{}},"tls":{"certificate":{}}},"updateStrategy":{"changeBudget":{}},"version":"7.10.0"}}
+  name: elasticsearch
+  namespace: elastic-system
+spec:
+  auth: {}
+  http:
+    service:
+      metadata: {}
+      spec: {}
+    tls:
+      certificate: {}
+  monitoring:
+    logs: {}
+    metrics: {}
+  nodeSets:
+  - config:
+      node.store.allow_mmap: false
+      xpack.security.enabled: false
+      xpack.security.transport.ssl.verification_mode: none
+    count: 1
+    name: default
+    podTemplate:
+      metadata:
+        creationTimestamp: null
+      spec:
+        containers:
+        - name: elasticsearch
+          readinessProbe:
+            exec:
+              command:
+              - bash
+              - -c
+              - echo 'true'
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            limits:
+              cpu: "1"
+              memory: 6Gi
+            requests:
+              cpu: "1"
+              memory: 6Gi
+  transport:
+    service:
+      metadata: {}
+      spec: {}
+    tls:
+      certificate: {}
+  updateStrategy:
+    changeBudget: {}
+  version: 7.10.0

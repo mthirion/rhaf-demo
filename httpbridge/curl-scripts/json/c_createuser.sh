@@ -1,0 +1,18 @@
+curl --location --request POST 'https://kafka-dev-my-bridge-service-staging.apps.cluster-dqx5g.dqx5g.sandbox2859.opentlc.com/consumers/cdc-demo-consumer-group?user_key=7b1e0bce4577b411238ebb868e2218f7' \
+--header 'Accept: application/vnd.kafka.v2+json' \
+--header 'Content-Type: application/vnd.kafka.v2+json' \
+--data-raw '{
+
+    "name": "orderconsumer",
+
+    "format": "json",
+
+    "auto.offset.reset": "earliest",
+
+    "enable.auto.commit": false,
+
+    "fetch.min.bytes": 512,
+
+    "consumer.request.timeout.ms": 30000
+
+}'

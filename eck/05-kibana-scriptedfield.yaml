@@ -1,0 +1,12 @@
+if (doc['after.order_date'].size() == 0) return null;
+else {
+    long val = doc['after.order_date'].value;
+    LocalDate d = LocalDate.ofEpochDay((int)val);
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    String formattedDate = d.format(dateTimeFormatter);
+    
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    cal.setTime(sdf.parse(formattedDate));
+    return cal.getTimeInMillis();
+}

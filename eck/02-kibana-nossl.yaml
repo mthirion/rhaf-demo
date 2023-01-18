@@ -1,0 +1,38 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"kibana.k8s.elastic.co/v1","kind":"Kibana","metadata":{"annotations":{},"name":"kibana","namespace":"elastic-system"},"spec":{"config":{"xpack.security.enabled":false},"count":1,"elasticsearchRef":{"name":"elasticsearch"},"enterpriseSearchRef":{"name":""},"monitoring":{"logs":{},"metrics":{}},"podTemplate":{"metadata":{"creationTimestamp":null},"spec":{"containers":[{"name":"kibana","resources":{"limits":{"cpu":"1","memory":"4Gi"},"requests":{"cpu":"1","memory":"4Gi"}}}]}},"version":"7.10.0"}}
+  name: kibana
+  namespace: elastic-system
+spec:
+  config:
+    xpack.security.enabled: false
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch
+  enterpriseSearchRef: {}
+  http:
+    service:
+      metadata: {}
+      spec: {}
+    tls:
+      certificate: {}
+  monitoring:
+    logs: {}
+    metrics: {}
+  podTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - name: kibana
+        resources:
+          limits:
+            cpu: "1"
+            memory: 4Gi
+          requests:
+            cpu: "1"
+            memory: 4Gi
+  version: 7.10.0
