@@ -3,7 +3,7 @@ apiVersion: capabilities.3scale.net/v1beta1
 kind: Product
 metadata:
   name: kafka-http-bridge-service
-  namespace: 3scale-amp
+  namespace: 3scale-apim
 spec:
   name: Strimzi Kafka Bridge API Reference
   systemName: kafka-http-bridge-service
@@ -270,7 +270,7 @@ apiVersion: capabilities.3scale.net/v1beta1
 kind: Backend
 metadata:
   name: kafka-http-bridge-service
-  namespace: 3scale-amp
+  namespace: 3scale-apim
 spec:
   name: Strimzi Kafka Bridge API Reference Backend
   systemName: kafka-http-bridge-service

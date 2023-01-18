@@ -2,7 +2,7 @@ apiVersion: capabilities.3scale.net/v1beta1
 kind: ProxyConfigPromote
 metadata:
   name: proxyconfigpromote-production
-  namespace: 3scale-amp
+  namespace: 3scale-apim
 spec:
   productCRName: kafka-http-bridge-service
   deleteCR: true
