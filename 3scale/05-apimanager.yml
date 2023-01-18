@@ -1,0 +1,18 @@
+# Reference: https://github.com/3scale/3scale-operator/blob/3scale-2.13.0-GA/doc/apimanager-reference.md
+apiVersion: apps.3scale.net/v1alpha1
+kind: APIManager
+metadata:
+  name: apimanager
+  namespace: 3scale-apim
+spec:
+  wildcardDomain: apps.cluster-dqx5g.dqx5g.sandbox2859.opentlc.com
+  tenantName: apim-demo
+  # Resource requirements disabled for DEMO purposes
+  resourceRequirementsEnabled: false
+  # Use postgreSQL database for system data
+  system:
+    database:
+      postgresql:
+        persistentVolumeClaim:
+          resources:
+            requests: 10Gi

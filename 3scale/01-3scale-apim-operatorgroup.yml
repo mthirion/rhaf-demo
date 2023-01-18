@@ -1,0 +1,8 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: 3scale-apim-operatorgroup
+  namespace: 3scale-apim
+spec:
+  targetNamespaces:
+  - 3scale-apim

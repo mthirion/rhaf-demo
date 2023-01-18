@@ -1,0 +1,285 @@
+---
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Product
+metadata:
+  name: kafka-http-bridge-service
+  namespace: 3scale-amp
+spec:
+  name: Strimzi Kafka Bridge API Reference
+  systemName: kafka-http-bridge-service
+  description: >-
+    The Strimzi Kafka Bridge provides a REST API for integrating HTTP based
+    client applications with a Kafka cluster. You can use the API to create and
+    manage consumers and send and receive records over HTTP rather than the
+    native Kafka protocol.
+  mappingRules:
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: openapi
+      pattern: /openapi$
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: seek
+      pattern: '/consumers/{groupid}/instances/{name}/positions$'
+    - httpMethod: DELETE
+      increment: 1
+      metricMethodRef: unsubscribe
+      pattern: '/consumers/{groupid}/instances/{name}/subscription$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: listsubscriptions
+      pattern: '/consumers/{groupid}/instances/{name}/subscription$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: subscribe
+      pattern: '/consumers/{groupid}/instances/{name}/subscription$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: getoffsets
+      pattern: '/topics/{topicname}/partitions/{partitionid}/offsets$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: info
+      pattern: /$
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: createconsumer
+      pattern: '/consumers/{groupid}$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: commit
+      pattern: '/consumers/{groupid}/instances/{name}/offsets$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: seektobeginning
+      pattern: '/consumers/{groupid}/instances/{name}/positions/beginning$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: seektoend
+      pattern: '/consumers/{groupid}/instances/{name}/positions/end$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: poll
+      pattern: '/consumers/{groupid}/instances/{name}/records$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: healthy
+      pattern: /healthy$
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: ready
+      pattern: /ready$
+    - httpMethod: DELETE
+      increment: 1
+      metricMethodRef: deleteconsumer
+      pattern: '/consumers/{groupid}/instances/{name}$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: assign
+      pattern: '/consumers/{groupid}/instances/{name}/assignments$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: listpartitions
+      pattern: '/topics/{topicname}/partitions$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: getpartition
+      pattern: '/topics/{topicname}/partitions/{partitionid}$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: sendtopartition
+      pattern: '/topics/{topicname}/partitions/{partitionid}$'
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: listtopics
+      pattern: /topics$
+    - httpMethod: GET
+      increment: 1
+      metricMethodRef: gettopic
+      pattern: '/topics/{topicname}$'
+    - httpMethod: POST
+      increment: 1
+      metricMethodRef: send
+      pattern: '/topics/{topicname}$'
+  metrics:
+    hits:
+      friendlyName: Hits
+      unit: hit
+      description: Number of API hits
+  methods:
+    deleteconsumer:
+      description: >-
+        Deletes a specified consumer instance. The request for this operation
+        MUST use the base URL (including the host and port) returned in the
+        response from the `POST` request to `/consumers/{groupid}` that was used
+        to create this consumer.
+      friendlyName: deleteConsumer
+    listtopics:
+      description: Retrieves a list of all topics.
+      friendlyName: listTopics
+    ready:
+      description: Check if the bridge is ready and can accept requests.
+      friendlyName: ready
+    listpartitions:
+      description: Retrieves a list of partitions for the topic.
+      friendlyName: listPartitions
+    sendtopartition:
+      description: >-
+        Sends one or more records to a given topic partition, optionally
+        specifying a key.
+      friendlyName: sendToPartition
+    seektoend:
+      description: >-
+        Configures a subscribed consumer to seek (and subsequently read from)
+        the offset at the end of one or more of the given topic partitions.
+      friendlyName: seekToEnd
+    send:
+      description: >-
+        Sends one or more records to a given topic, optionally specifying a
+        partition, key, or both.
+      friendlyName: send
+    subscribe:
+      description: >-
+        Subscribes a consumer to one or more topics. You can describe the topics
+        to which the consumer will subscribe in a list (of `Topics` type) or as
+        a `topic_pattern` field. Each call replaces the subscriptions for the
+        subscriber.
+      friendlyName: subscribe
+    getoffsets:
+      description: Retrieves a summary of the offsets for the topic partition.
+      friendlyName: getOffsets
+    seektobeginning:
+      description: >-
+        Configures a subscribed consumer to seek (and subsequently read from)
+        the first offset in one or more given topic partitions.
+      friendlyName: seekToBeginning
+    info:
+      description: 'Retrieves information about the Kafka Bridge instance, in JSON format.'
+      friendlyName: info
+    assign:
+      description: Assigns one or more topic partitions to a consumer.
+      friendlyName: assign
+    openapi:
+      description: Retrieves the OpenAPI v2 specification in JSON format.
+      friendlyName: openapi
+    unsubscribe:
+      description: Unsubscribes a consumer from all topics.
+      friendlyName: unsubscribe
+    createconsumer:
+      description: >-
+        Creates a consumer instance in the given consumer group. You can
+        optionally specify a consumer name and supported configuration options.
+        It returns a base URI which must be used to construct URLs for
+        subsequent requests against this consumer instance.
+      friendlyName: createConsumer
+    getpartition:
+      description: Retrieves partition metadata for the topic partition.
+      friendlyName: getPartition
+    commit:
+      description: >-
+        Commits a list of consumer offsets. To commit offsets for all records
+        fetched by the consumer, leave the request body empty.
+      friendlyName: commit
+    seek:
+      description: >-
+        Configures a subscribed consumer to fetch offsets from a particular
+        offset the next time it fetches a set of records from a given topic
+        partition. This overrides the default fetch behavior for consumers. You
+        can specify one or more topic partitions.
+      friendlyName: seek
+    listsubscriptions:
+      description: Retrieves a list of the topics to which the consumer is subscribed.
+      friendlyName: listSubscriptions
+    gettopic:
+      description: Retrieves the metadata about a given topic.
+      friendlyName: getTopic
+    healthy:
+      description: >-
+        Check if the bridge is running. This does not necessarily imply that it
+        is ready to accept requests.
+      friendlyName: healthy
+    poll:
+      description: >-
+        Retrieves records for a subscribed consumer, including message values,
+        topics, and partitions. The request for this operation MUST use the base
+        URL (including the host and port) returned in the response from the
+        `POST` request to `/consumers/{groupid}` that was used to create this
+        consumer.
+      friendlyName: poll
+  policies:
+  - name: caching
+    version: builtin
+    configuration:
+      caching_type: resilient
+    enabled: true
+  - name: logging
+    version: builtin
+    configuration:
+      condition:
+        combine_op: and
+      enable_access_logs: true
+    enabled: true
+  - name: apicast
+    version: builtin
+    configuration: {}
+    enabled: true
+  applicationPlans:
+    basic:
+      name: Basic
+      # Controls whether the application plan is published. If not specified it is hidden by default
+      published: true
+      appsRequireApproval: false
+      trialPeriod: 0
+      setupFee: "0.00"
+      custom: false
+      state: published
+      costMonth: "0.00"
+      pricingRules: []
+      limits:
+      - period: minute
+        value: 30
+        metricMethodRef:
+          systemName: hits
+  backendUsages:
+    kafka-http-bridge-service:
+      path: "/"
+  deployment:
+    apicastHosted:
+      authentication:
+        userkey:
+          authUserKey: user_key
+          credentials: query
+          security:
+            hostHeader: ''
+            secretToken: Shared_secret_sent_from_proxy_to_API_backend_65ef5d95bd1bbdf9
+          gatewayResponse:
+            errorStatusAuthFailed: 403
+            errorHeadersAuthFailed: text/plain; charset=us-ascii
+            errorAuthFailed: Authentication failed
+            errorStatusAuthMissing: 403
+            errorHeadersAuthMissing: text/plain; charset=us-ascii
+            errorAuthMissing: Authentication parameters missing
+            errorStatusNoMatch: 404
+            errorHeadersNoMatch: text/plain; charset=us-ascii
+            errorNoMatch: No Mapping Rule matched
+            errorStatusLimitsExceeded: 429
+            errorHeadersLimitsExceeded: text/plain; charset=us-ascii
+            errorLimitsExceeded: Usage limit exceeded
+---
+apiVersion: capabilities.3scale.net/v1beta1
+kind: Backend
+metadata:
+  name: kafka-http-bridge-service
+  namespace: 3scale-amp
+spec:
+  name: Strimzi Kafka Bridge API Reference Backend
+  systemName: kafka-http-bridge-service
+  privateBaseURL: http://my-bridge-bridge-service.kafka-dev.svc.cluster.local:8080/
+  description: Backend of my-bridge-bridge-service
+  mappingRules: []
+  metrics:
+    hits:
+      friendlyName: Hits
+      unit: hit
+      description: Number of API hits
+  methods: {}
