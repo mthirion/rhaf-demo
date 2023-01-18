@@ -1,0 +1,17 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaBridge
+metadata:
+  name: my-bridge
+  namespace: kafka-dev
+spec:
+  enableMetrics: true
+  bootstrapServers: 'my-cluster-kafka-bootstrap.kafka-dev.svc:9094'
+  authentication:
+    passwordSecret:
+      secretName: kafka-http-bridge
+      password: password
+    type: scram-sha-512
+    username: kafka-http-bridge
+  http:
+    port: 8080
+  replicas: 1
