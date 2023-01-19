@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: RHAF - 3scale API Manager
+  name: 3scale-apim
+spec: {}

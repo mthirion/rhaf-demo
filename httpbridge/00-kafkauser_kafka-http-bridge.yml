@@ -1,0 +1,31 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-http-bridge
+  labels:
+    strimzi.io/cluster: my-cluster
+  namespace: kafka-dev
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    acls:
+      - resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: '*'
+          patternType: literal
+        operation: Describe
+        host: '*'
+      - resource:
+          name: cdc-demo-consumer-group
+          patternType: literal
+          type: group
+        operation: Read
+        host: '*'
+    type: simple
