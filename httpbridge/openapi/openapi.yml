@@ -1,0 +1,1405 @@
+---
+openapi: 3.0.2
+info:
+  title: Strimzi Kafka Bridge API Reference
+  version: 0.1.0
+  description: 'The Strimzi Kafka Bridge provides a REST API for integrating HTTP
+    based client applications with a Kafka cluster. You can use the API to create
+    and manage consumers and send and receive records over HTTP rather than the native
+    Kafka protocol. '
+servers:
+- url: https://kafka-dev-my-bridge-service.apps.cluster-dqx5g.dqx5g.sandbox2859.opentlc.com/
+  description: Service URL
+paths:
+  /consumers/{groupid}:
+    post:
+      requestBody:
+        description: "Name and configuration of the consumer. The name is unique within\
+          \ the scope of the consumer group. If a name is not specified, a randomly\
+          \ generated name is assigned. All parameters are optional. The supported\
+          \ configuration options are shown in the following example."
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/Consumer'
+        required: true
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group in which to create the consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/CreatedConsumer'
+              example:
+                instance_id: consumer1
+                base_uri: http://localhost:8080/consumers/my-group/instances/consumer1
+          description: Consumer created successfully.
+        "409":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 409
+                message: A consumer instance with the specified name already exists
+                  in the Kafka Bridge.
+          description: A consumer instance with the specified name already exists
+            in the Kafka Bridge.
+        "422":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 422
+                message: One or more consumer configuration options have invalid values.
+          description: One or more consumer configuration options have invalid values.
+      operationId: createConsumer
+      description: Creates a consumer instance in the given consumer group. You can
+        optionally specify a consumer name and supported configuration options. It
+        returns a base URI which must be used to construct URLs for subsequent requests
+        against this consumer instance.
+      x-codegen-request-body-name: body
+  /consumers/{groupid}/instances/{name}/positions/beginning:
+    post:
+      requestBody:
+        description: List of topic partitions to which the consumer is subscribed.
+          The consumer will seek the first offset in the specified partitions.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/Partitions'
+        required: true
+      tags:
+      - Seek
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the subscribed consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Seek to the beginning performed successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: "The specified consumer instance was not found, or the specified\
+            \ consumer instance did not have one of the specified partitions assigned."
+      operationId: seekToBeginning
+      description: Configures a subscribed consumer to seek (and subsequently read
+        from) the first offset in one or more given topic partitions.
+      x-codegen-request-body-name: body
+  /consumers/{groupid}/instances/{name}/positions/end:
+    post:
+      requestBody:
+        description: List of topic partitions to which the consumer is subscribed.
+          The consumer will seek the last offset in the specified partitions.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/Partitions'
+        required: false
+      tags:
+      - Seek
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the subscribed consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Seek to the end performed successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: "The specified consumer instance was not found, or the specified\
+            \ consumer instance did not have one of the specified partitions assigned."
+      operationId: seekToEnd
+      description: Configures a subscribed consumer to seek (and subsequently read
+        from) the offset at the end of one or more of the given topic partitions.
+      x-codegen-request-body-name: body
+  /consumers/{groupid}/instances/{name}/subscription:
+    get:
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the subscribed consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/SubscribedTopicList'
+          description: List of subscribed topics and partitions.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+      operationId: listSubscriptions
+      description: Retrieves a list of the topics to which the consumer is subscribed.
+    post:
+      requestBody:
+        description: List of topics to which the consumer will subscribe.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/Topics'
+        required: true
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the consumer to subscribe to topics.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Consumer subscribed successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+        "409":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 409
+                message: "Subscriptions to topics, partitions, and patterns are mutually\
+                  \ exclusive."
+          description: "Subscriptions to topics, partitions, and patterns are mutually\
+            \ exclusive."
+        "422":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 422
+                message: A list (of Topics type) or a topic_pattern must be specified.
+          description: A list (of `Topics` type) or a `topic_pattern` must be specified.
+      operationId: subscribe
+      description: Subscribes a consumer to one or more topics. You can describe the
+        topics to which the consumer will subscribe in a list (of `Topics` type) or
+        as a `topic_pattern` field. Each call replaces the subscriptions for the subscriber.
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the consumer to unsubscribe from topics.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Consumer unsubscribed successfully.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+      operationId: unsubscribe
+      description: Unsubscribes a consumer from all topics.
+  /consumers/{groupid}/instances/{name}/positions:
+    post:
+      requestBody:
+        description: List of partition offsets from which the subscribed consumer
+          will next fetch records.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/OffsetCommitSeekList'
+        required: true
+      tags:
+      - Seek
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the subscribed consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Seek performed successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: "The specified consumer instance was not found, or the specified\
+            \ consumer instance did not have one of the specified partitions assigned."
+      operationId: seek
+      description: Configures a subscribed consumer to fetch offsets from a particular
+        offset the next time it fetches a set of records from a given topic partition.
+        This overrides the default fetch behavior for consumers. You can specify one
+        or more topic partitions.
+      x-codegen-request-body-name: body
+  /consumers/{groupid}/instances/{name}/assignments:
+    post:
+      requestBody:
+        description: List of topic partitions to assign to the consumer.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/Partitions'
+        required: true
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the consumer to assign topic partitions to.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Partitions assigned successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+        "409":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 409
+                message: "Subscriptions to topics, partitions, and patterns are mutually\
+                  \ exclusive."
+          description: "Subscriptions to topics, partitions, and patterns are mutually\
+            \ exclusive."
+      operationId: assign
+      description: Assigns one or more topic partitions to a consumer.
+      x-codegen-request-body-name: body
+  /topics:
+    get:
+      tags:
+      - Topics
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+              - topic1
+              - topic2
+          description: List of topics.
+      operationId: listTopics
+      description: Retrieves a list of all topics.
+  /topics/{topicname}:
+    get:
+      tags:
+      - Topics
+      parameters:
+      - name: topicname
+        description: Name of the topic to send records to or retrieve metadata from.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/TopicMetadata'
+              example:
+                name: topic
+                offset: 2
+                configs:
+                  cleanup.policy: compact
+                partitions:
+                - partition: 1
+                  leader: 1
+                  replicas:
+                  - broker: 1
+                    leader: true
+                    in_sync: true
+                  - broker: 2
+                    leader: false
+                    in_sync: true
+                - partition: 2
+                  leader: 2
+                  replicas:
+                  - broker: 1
+                    leader: false
+                    in_sync: true
+                  - broker: 2
+                    leader: true
+                    in_sync: true
+          description: Topic metadata
+      operationId: getTopic
+      description: Retrieves the metadata about a given topic.
+    post:
+      requestBody:
+        content:
+          application/vnd.kafka.json.v2+json:
+            schema:
+              $ref: '#/components/schemas/ProducerRecordList'
+          application/vnd.kafka.binary.v2+json:
+            schema:
+              $ref: '#/components/schemas/ProducerRecordList'
+        required: true
+      tags:
+      - Topics
+      - Producer
+      parameters:
+      - name: topicname
+        description: Name of the topic to send records to or retrieve metadata from.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: async
+        description: "Whether to return immediately upon sending records, instead\
+          \ of waiting for metadata. No offsets will be returned if specified. Defaults\
+          \ to false."
+        schema:
+          type: boolean
+        in: query
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/OffsetRecordSentList'
+              example:
+                offsets:
+                - partition: 2
+                  offset: 0
+                - partition: 1
+                  offset: 1
+                - partition: 2
+                  offset: 2
+          description: Records sent successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified topic was not found.
+          description: The specified topic was not found.
+        "422":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 422
+                message: The record list contains invalid records.
+          description: The record list is not valid.
+      operationId: send
+      description: "Sends one or more records to a given topic, optionally specifying\
+        \ a partition, key, or both."
+      x-codegen-request-body-name: body
+  /consumers/{groupid}/instances/{name}/records:
+    get:
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the subscribed consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the subscribed consumer to retrieve records from.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: timeout
+        description: "The maximum amount of time, in milliseconds, that the HTTP Bridge\
+          \ spends retrieving records before timing out the request."
+        schema:
+          type: integer
+        in: query
+      - name: max_bytes
+        description: "The maximum size, in bytes, of unencoded keys and values that\
+          \ can be included in the response. Otherwise, an error response with code\
+          \ 422 is returned."
+        schema:
+          type: integer
+        in: query
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.json.v2+json:
+              schema:
+                $ref: '#/components/schemas/ConsumerRecordList'
+              example:
+              - topic: topic
+                key: key1
+                value:
+                  foo: bar
+                partition: 0
+                offset: 2
+              - topic: topic
+                key: key2
+                value:
+                - foo2
+                - bar2
+                partition: 1
+                offset: 3
+            application/vnd.kafka.binary.v2+json:
+              schema:
+                $ref: '#/components/schemas/ConsumerRecordList'
+              example: |-
+                [
+                  {
+                    "topic": "test",
+                    "key": "a2V5",
+                    "value": "Y29uZmx1ZW50",
+                    "partition": 1,
+                    "offset": 100,
+                  },
+                  {
+                    "topic": "test",
+                    "key": "a2V5",
+                    "value": "a2Fma2E=",
+                    "partition": 2,
+                    "offset": 101,
+                  }
+                ]
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/ConsumerRecordList'
+          description: Poll request executed successfully.
+        "404":
+          content:
+            application/vnd.kafka.json.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.binary.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+        "406":
+          content:
+            application/vnd.kafka.json.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.binary.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 406
+                message: The `format` used in the consumer creation request does not
+                  match the embedded format in the Accept header of this request.
+          description: The `format` used in the consumer creation request does not
+            match the embedded format in the Accept header of this request or the
+            bridge got a message from the topic which is not JSON encoded.
+        "422":
+          content:
+            application/vnd.kafka.json.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.binary.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 422
+                message: Response exceeds the maximum number of bytes the consumer
+                  can receive
+          description: Response exceeds the maximum number of bytes the consumer can
+            receive
+      operationId: poll
+      description: "Retrieves records for a subscribed consumer, including message\
+        \ values, topics, and partitions. The request for this operation MUST use\
+        \ the base URL (including the host and port) returned in the response from\
+        \ the `POST` request to `/consumers/{groupid}` that was used to create this\
+        \ consumer."
+  /topics/{topicname}/partitions:
+    get:
+      tags:
+      - Topics
+      parameters:
+      - name: topicname
+        description: Name of the topic to send records to or retrieve metadata from.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PartitionMetadata'
+              example:
+              - partition: 1
+                leader: 1
+                replicas:
+                - broker: 1
+                  leader: true
+                  in_sync: true
+                - broker: 2
+                  leader: false
+                  in_sync: true
+              - partition: 2
+                leader: 2
+                replicas:
+                - broker: 1
+                  leader: false
+                  in_sync: true
+                - broker: 2
+                  leader: true
+                  in_sync: true
+          description: List of partitions
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified topic was not found.
+          description: The specified topic was not found.
+      operationId: listPartitions
+      description: Retrieves a list of partitions for the topic.
+  /topics/{topicname}/partitions/{partitionid}:
+    get:
+      tags:
+      - Topics
+      parameters:
+      - name: topicname
+        description: Name of the topic to send records to or retrieve metadata from.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: partitionid
+        description: ID of the partition to send records to or retrieve metadata from.
+        schema:
+          type: integer
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/PartitionMetadata'
+              example:
+                partition: 1
+                leader: 1
+                replicas:
+                - broker: 1
+                  leader: true
+                  in_sync: true
+                - broker: 2
+                  leader: false
+                  in_sync: true
+          description: Partition metadata
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified topic partition was not found.
+          description: The specified topic partition was not found.
+      operationId: getPartition
+      description: Retrieves partition metadata for the topic partition.
+    post:
+      requestBody:
+        description: "List of records to send to a given topic partition, including\
+          \ a value (required) and a key (optional)."
+        content:
+          application/vnd.kafka.json.v2+json:
+            schema:
+              $ref: '#/components/schemas/ProducerRecordToPartitionList'
+          application/vnd.kafka.binary.v2+json:
+            schema:
+              $ref: '#/components/schemas/ProducerRecordToPartitionList'
+        required: true
+      tags:
+      - Topics
+      - Producer
+      parameters:
+      - name: topicname
+        description: Name of the topic to send records to or retrieve metadata from.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: partitionid
+        description: ID of the partition to send records to or retrieve metadata from.
+        schema:
+          type: integer
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/OffsetRecordSentList'
+              example:
+                offsets:
+                - partition: 2
+                  offset: 0
+                - partition: 1
+                  offset: 1
+                - partition: 2
+                  offset: 2
+          description: Records sent successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified topic partition was not found.
+          description: The specified topic partition was not found.
+        "422":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 422
+                message: The record is not valid.
+          description: The record is not valid.
+      operationId: sendToPartition
+      description: "Sends one or more records to a given topic partition, optionally\
+        \ specifying a key."
+      x-codegen-request-body-name: body
+  /topics/{topicname}/partitions/{partitionid}/offsets:
+    get:
+      tags:
+      - Topics
+      parameters:
+      - name: topicname
+        description: Name of the topic containing the partition.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: partitionid
+        description: ID of the partition.
+        schema:
+          type: integer
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/OffsetsSummary'
+              example:
+                beginning_offset: 10
+                end_offset: 50
+          description: A summary of the offsets for the topic partition.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified topic partition was not found.
+          description: The specified topic partition was not found.
+      operationId: getOffsets
+      description: Retrieves a summary of the offsets for the topic partition.
+  /consumers/{groupid}/instances/{name}:
+    delete:
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the consumer to delete.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Consumer removed successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+      operationId: deleteConsumer
+      description: "Deletes a specified consumer instance. The request for this operation\
+        \ MUST use the base URL (including the host and port) returned in the response\
+        \ from the `POST` request to `/consumers/{groupid}` that was used to create\
+        \ this consumer."
+  /consumers/{groupid}/instances/{name}/offsets:
+    post:
+      requestBody:
+        description: List of consumer offsets to commit to the consumer offsets commit
+          log. You can specify one or more topic partitions to commit offsets for.
+        content:
+          application/vnd.kafka.v2+json:
+            schema:
+              $ref: '#/components/schemas/OffsetCommitSeekList'
+        required: false
+      tags:
+      - Consumers
+      parameters:
+      - name: groupid
+        description: ID of the consumer group to which the consumer belongs.
+        schema:
+          type: string
+        in: path
+        required: true
+      - name: name
+        description: Name of the consumer.
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "204":
+          description: Commit made successfully.
+        "404":
+          content:
+            application/vnd.kafka.v2+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error_code: 404
+                message: The specified consumer instance was not found.
+          description: The specified consumer instance was not found.
+      operationId: commit
+      description: "Commits a list of consumer offsets. To commit offsets for all\
+        \ records fetched by the consumer, leave the request body empty."
+      x-codegen-request-body-name: body
+  /healthy:
+    get:
+      responses:
+        "200":
+          description: The bridge is healthy
+      operationId: healthy
+      description: Check if the bridge is running. This does not necessarily imply
+        that it is ready to accept requests.
+  /ready:
+    get:
+      responses:
+        "200":
+          description: The bridge is ready
+      operationId: ready
+      description: Check if the bridge is ready and can accept requests.
+  /openapi:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OpenAPI v2 specification in JSON format retrieved successfully.
+      operationId: openapi
+      description: Retrieves the OpenAPI v2 specification in JSON format.
+  /:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BridgeInfo'
+          description: Information about Kafka Bridge instance.
+      operationId: info
+      description: "Retrieves information about the Kafka Bridge instance, in JSON\
+        \ format."
+components:
+  schemas:
+    KafkaHeader:
+      title: KafkaHeader
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          format: byte
+          description: "The header value in binary format, base64-encoded"
+          pattern: "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+          type: string
+      example:
+        key: key1
+        value: dmFsdWUx
+    KafkaHeaderList:
+      title: KafkaHeaderList
+      type: array
+      items:
+        $ref: '#/components/schemas/KafkaHeader'
+      example:
+      - key: key1
+        value: dmFsdWUx
+      - key: key2
+        value: dmFsdWUy
+    ConsumerRecord:
+      title: ConsumerRecord
+      type: object
+      properties:
+        key:
+          type: string
+        offset:
+          format: int64
+          type: integer
+        partition:
+          format: int32
+          type: integer
+        topic:
+          type: string
+        value:
+          type: string
+        headers:
+          $ref: '#/components/schemas/KafkaHeaderList'
+      example:
+        key: key1
+        offset: 2
+        partition: 0
+        topic: topic
+        value: value1
+        headers:
+        - key: key1
+          value: dmFsdWUx
+        - key: key2
+          value: dmFsdWUy
+    ConsumerRecordList:
+      title: ConsumerRecordList
+      type: array
+      items:
+        $ref: '#/components/schemas/ConsumerRecord'
+      example:
+      - topic: topic
+        key: key1
+        value: value1
+        partition: 0
+        offset: 2
+      - topic: topic
+        key: key2
+        value: value2
+        partition: 1
+        offset: 3
+    CreatedConsumer:
+      title: CreatedConsumer
+      type: object
+      properties:
+        instance_id:
+          description: Unique ID for the consumer instance in the group.
+          type: string
+        base_uri:
+          description: Base URI used to construct URIs for subsequent requests against
+            this consumer instance.
+          type: string
+      example:
+        instance_id: my-consumer
+        base_uri: http://localhost:8080/consumers/my-group/instances/my-consumer
+    OffsetRecordSent:
+      title: OffsetRecordSent
+      type: object
+      properties:
+        partition:
+          format: int32
+          type: integer
+        offset:
+          format: int64
+          type: integer
+      example:
+        partition: 31
+        offset: 86
+    OffsetRecordSentList:
+      title: OffsetRecordSentList
+      type: object
+      properties:
+        offsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffsetRecordSent'
+      example:
+        offsets:
+        - partition: 92
+          offset: 98
+        - partition: 65
+          offset: 91
+    OffsetsSummary:
+      title: OffsetsSummary
+      type: object
+      properties:
+        beginning_offset:
+          format: int64
+          type: integer
+        end_offset:
+          format: int64
+          type: integer
+      example:
+        beginning_offset: 10
+        end_offset: 50
+    Error:
+      title: Error
+      type: object
+      properties:
+        error_code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      example: |-
+        {
+            "error_code": 404,
+            "message": "resource not found"
+        }
+    Consumer:
+      title: Consumer
+      type: object
+      properties:
+        name:
+          description: "The unique name for the consumer instance. The name is unique\
+            \ within the scope of the consumer group. The name is used in URLs. If\
+            \ a name is not specified, a randomly generated name is assigned."
+          type: string
+        format:
+          description: "The allowable message format for the consumer, which can be\
+            \ `binary` (default) or `json`. The messages are converted into a JSON\
+            \ format. "
+          type: string
+        auto.offset.reset:
+          description: "Resets the offset position for the consumer. If set to `latest`\
+            \ (default), messages are read from the latest offset. If set to `earliest`,\
+            \ messages are read from the first offset."
+          type: string
+        fetch.min.bytes:
+          description: "Sets the minimum amount of data, in bytes, for the consumer\
+            \ to receive. The broker waits until the data to send exceeds this amount.\
+            \ Default is `1` byte."
+          type: integer
+        consumer.request.timeout.ms:
+          description: "Sets the maximum amount of time, in milliseconds, for the\
+            \ consumer to wait for messages for a request. If the timeout period is\
+            \ reached without a response, an error is returned. Default is `30000`\
+            \ (30 seconds)."
+          type: integer
+        enable.auto.commit:
+          description: "If set to `true` (default), message offsets are committed\
+            \ automatically for the consumer. If set to `false`, message offsets must\
+            \ be committed manually."
+          type: boolean
+        isolation.level:
+          description: "If set to `read_uncommitted` (default), all transaction records\
+            \ are retrieved, indpendent of any transaction outcome. If set to `read_committed`,\
+            \ the records from committed transactions are retrieved."
+          type: string
+      example:
+        name: consumer1
+        format: binary
+        auto.offset.reset: earliest
+        enable.auto.commit: false
+        fetch.min.bytes: 512
+        consumer.request.timeout.ms: 30000
+        isolation.level: read_committed
+    OffsetCommitSeek:
+      title: OffsetCommitSeek
+      required:
+      - offset
+      - partition
+      - topic
+      type: object
+      properties:
+        partition:
+          format: int32
+          type: integer
+        offset:
+          format: int64
+          type: integer
+        topic:
+          type: string
+      example:
+        partition: 43
+        offset: 92
+        topic: topic
+    OffsetCommitSeekList:
+      title: OffsetCommitSeekList
+      type: object
+      properties:
+        offsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffsetCommitSeek'
+      example:
+        offsets:
+        - topic: topic
+          partition: 0
+          offset: 15
+        - topic: topic
+          partition: 1
+          offset: 42
+    Partition:
+      title: Partition
+      type: object
+      properties:
+        partition:
+          format: int32
+          type: integer
+        topic:
+          type: string
+    Partitions:
+      title: Partitions
+      type: object
+      properties:
+        partitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Partition'
+      example:
+        partitions:
+        - topic: topic
+          partition: 0
+        - topic: topic
+          partition: 1
+    ProducerRecord:
+      title: ProducerRecord
+      type: object
+      properties:
+        partition:
+          format: int32
+          type: integer
+        headers:
+          $ref: '#/components/schemas/KafkaHeaderList'
+      example:
+        key: key1
+        partition: 0
+        value: value1
+        headers:
+        - key: key1
+          value: dmFsdWUx
+        - key: key2
+          value: dmFsdWUy
+    ProducerRecordList:
+      title: ProducerRecordList
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProducerRecord'
+      example:
+        records:
+        - key: key1
+          value: value1
+        - value: value2
+          partition: 1
+        - value: value3
+    ProducerRecordToPartition:
+      title: ProducerRecordToPartition
+      type: object
+      example:
+        value:
+          v: 128
+        key:
+          k: key
+    ProducerRecordToPartitionList:
+      title: ProducerRecordToPartitionList
+      type: object
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProducerRecordToPartition'
+      example:
+        records:
+        - key: key1
+          value: value1
+        - value: value2
+    Topics:
+      title: Topics
+      type: object
+      properties:
+        topics:
+          type: array
+          items:
+            type: string
+        topic_pattern:
+          description: A regex topic pattern for matching multiple topics
+          type: string
+      example:
+        topics:
+        - topic1
+        - topic2
+    AssignedTopicPartitions:
+      title: AssignedTopicPartitions
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          format: int32
+          type: integer
+      example:
+        my-topic1:
+        - 1
+        - 2
+        - 3
+    SubscribedTopicList:
+      title: SubscribedTopicList
+      type: object
+      properties:
+        topics:
+          $ref: '#/components/schemas/Topics'
+        partitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignedTopicPartitions'
+      example:
+        topics:
+        - my-topic1
+        - my-topic2
+        partitions:
+        - my-topic1:
+          - 1
+          - 2
+          - 3
+        - my-topic2:
+          - 1
+    TopicMetadata:
+      title: TopicMetadata
+      type: object
+      properties:
+        name:
+          description: Name of the topic
+          type: string
+        configs:
+          description: Per-topic configuration overrides
+          type: object
+          additionalProperties:
+            type: string
+        partitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PartitionMetadata'
+      example:
+        name: topic
+        offset: 2
+        configs:
+          cleanup.policy: compact
+        partitions:
+        - partition: 1
+          leader: 1
+          replicas:
+          - broker: 1
+            leader: true
+            in_sync: true
+          - broker: 2
+            leader: false
+            in_sync: true
+        - partition: 2
+          leader: 2
+          replicas:
+          - broker: 1
+            leader: false
+            in_sync: true
+          - broker: 2
+            leader: true
+            in_sync: true
+    PartitionMetadata:
+      title: PartitionMetadata
+      type: object
+      properties:
+        partition:
+          format: int32
+          type: integer
+        leader:
+          format: int32
+          type: integer
+        replicas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Replica'
+      example:
+        partition: 1
+        leader: 1
+        replicas:
+        - broker: 1
+          leader: true
+          in_sync: true
+        - broker: 2
+          leader: false
+          in_sync: true
+    Replica:
+      title: Replica
+      type: object
+      properties:
+        broker:
+          format: int32
+          type: integer
+        leader:
+          type: boolean
+        in_sync:
+          type: boolean
+      example:
+        broker: 1
+        leader: true
+        in_sync: true
+    BridgeInfo:
+      title: BridgeInfo
+      description: Information about Kafka Bridge instance.
+      type: object
+      properties:
+        bridge_version:
+          type: string
+      example:
+        bridge_version: 0.16.0
+  securitySchemes:
+    api-key:
+      type: apiKey
+      description: Secure service with API key
+      name: user_key
+      in: query
+security:
+- api-key: []
+tags:
+- name: Consumers
+  description: "Consumer operations to create consumers in your Kafka cluster and\
+    \ perform common actions, such as subscribing to topics, retrieving processed\
+    \ records, and committing offsets."
+- name: Topics
+  description: "Topic operations to send messages to a specified topic or topic partition,\
+    \ optionally including message keys in requests. You can also retrieve topics\
+    \ and topic metadata."
+- name: Seek
+  description: Seek operations that enable a consumer to begin receiving messages
+    from a given offset position.
+- name: Producer
+  description: Producer operations to send records to a specified topic or topic partition.
