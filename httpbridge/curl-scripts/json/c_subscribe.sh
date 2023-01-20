@@ -9,4 +9,4 @@ curl --location --request POST 'https://kafka-dev-my-bridge-service-staging.apps
 
     ]
 
-}'
+}' -v

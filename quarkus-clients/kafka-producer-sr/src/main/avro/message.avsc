@@ -5,14 +5,24 @@
   "doc": "Schema for a Message.",
   "fields": [
     {
-      "name": "timestamp",
-      "type": "long",
-      "doc": "Message timestamp."
+      "name": "quantity",
+      "type": "string",
+      "doc": "Product quantity."
     },
     {
-      "name": "content",
+      "name": "orderdate",
       "type": "string",
-      "doc": "Message content."
-    }
+      "doc": "Order date."
+    },
+    {
+      "name": "productid",
+      "type": "string",
+      "doc": "Product reference."
+    },
+    {
+      "name": "consumerid",
+      "type": "string",
+      "doc": "Consumer reference."
+    }    
   ]
 }

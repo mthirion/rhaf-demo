@@ -13,7 +13,6 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import io.smallrye.reactive.messaging.kafka.OutgoingKafkaRecordMetadata;
 
-
 import com.redhat.demo.avro.schema.Message;
 
 
@@ -39,9 +38,13 @@ public class KafkaProducer {
                 lastKey++;
                 System.out.println("Generating message key: "+lastKey);
 
-                Message m = new Message();
-                m.setContent("demo message "+lastKey);
-                m.setTimestamp(System.currentTimeMillis());
+                com.redhat.demo.avro.schema.Message m = new com.redhat.demo.avro.schema.Message();
+                
+                m.setQuantity("1");
+                m.setConsumerid("1003");
+                m.setOrderdate("26-03-2017");
+                m.setProductid("108");
+
                 KafkaRecord record = KafkaRecord.of(lastKey, m);
 
                 /*

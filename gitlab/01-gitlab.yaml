@@ -1,0 +1,19 @@
+apiVersion: apps.gitlab.com/v1beta1
+kind: GitLab
+metadata:
+  name: git
+  namespace: gitlab-system
+spec:
+  chart:
+    values:
+      certmanager:
+        install: false
+      global:
+        hosts:
+          domain: apps.<cluster>.opentlc.com
+          hostSuffix: null
+        ingress:
+          configureCertmanager: false
+          tls:
+            secretName: null
+    version: 6.7.3

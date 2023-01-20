@@ -15,10 +15,10 @@ import org.apache.avro.message.SchemaStore;
 /** Schema for a Message. */
 @org.apache.avro.specific.AvroGenerated
 public class Message extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 355681487426539442L;
+  private static final long serialVersionUID = -805788423880438145L;
 
 
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Message\",\"namespace\":\"com.redhat.demo.avro.schema\",\"doc\":\"Schema for a Message.\",\"fields\":[{\"name\":\"timestamp\",\"type\":\"long\",\"doc\":\"Message timestamp.\"},{\"name\":\"content\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Message content.\"}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Message\",\"namespace\":\"com.redhat.demo.avro.schema\",\"doc\":\"Schema for a Message.\",\"fields\":[{\"name\":\"quantity\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Product quantity.\"},{\"name\":\"orderdate\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Order date.\"},{\"name\":\"productid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Product reference.\"},{\"name\":\"consumerid\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"},\"doc\":\"Consumer reference.\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
@@ -74,10 +74,14 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
     return DECODER.decode(b);
   }
 
-  /** Message timestamp. */
-  private long timestamp;
-  /** Message content. */
-  private java.lang.String content;
+  /** Product quantity. */
+  private java.lang.String quantity;
+  /** Order date. */
+  private java.lang.String orderdate;
+  /** Product reference. */
+  private java.lang.String productid;
+  /** Consumer reference. */
+  private java.lang.String consumerid;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -88,12 +92,16 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
 
   /**
    * All-args constructor.
-   * @param timestamp Message timestamp.
-   * @param content Message content.
+   * @param quantity Product quantity.
+   * @param orderdate Order date.
+   * @param productid Product reference.
+   * @param consumerid Consumer reference.
    */
-  public Message(java.lang.Long timestamp, java.lang.String content) {
-    this.timestamp = timestamp;
-    this.content = content;
+  public Message(java.lang.String quantity, java.lang.String orderdate, java.lang.String productid, java.lang.String consumerid) {
+    this.quantity = quantity;
+    this.orderdate = orderdate;
+    this.productid = productid;
+    this.consumerid = consumerid;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -101,8 +109,10 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
-    case 0: return timestamp;
-    case 1: return content;
+    case 0: return quantity;
+    case 1: return orderdate;
+    case 2: return productid;
+    case 3: return consumerid;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -111,46 +121,84 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: timestamp = (java.lang.Long)value$; break;
-    case 1: content = value$ != null ? value$.toString() : null; break;
+    case 0: quantity = value$ != null ? value$.toString() : null; break;
+    case 1: orderdate = value$ != null ? value$.toString() : null; break;
+    case 2: productid = value$ != null ? value$.toString() : null; break;
+    case 3: consumerid = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   /**
-   * Gets the value of the 'timestamp' field.
-   * @return Message timestamp.
+   * Gets the value of the 'quantity' field.
+   * @return Product quantity.
    */
-  public long getTimestamp() {
-    return timestamp;
+  public java.lang.String getQuantity() {
+    return quantity;
   }
 
 
   /**
-   * Sets the value of the 'timestamp' field.
-   * Message timestamp.
+   * Sets the value of the 'quantity' field.
+   * Product quantity.
    * @param value the value to set.
    */
-  public void setTimestamp(long value) {
-    this.timestamp = value;
+  public void setQuantity(java.lang.String value) {
+    this.quantity = value;
   }
 
   /**
-   * Gets the value of the 'content' field.
-   * @return Message content.
+   * Gets the value of the 'orderdate' field.
+   * @return Order date.
    */
-  public java.lang.String getContent() {
-    return content;
+  public java.lang.String getOrderdate() {
+    return orderdate;
   }
 
 
   /**
-   * Sets the value of the 'content' field.
-   * Message content.
+   * Sets the value of the 'orderdate' field.
+   * Order date.
    * @param value the value to set.
    */
-  public void setContent(java.lang.String value) {
-    this.content = value;
+  public void setOrderdate(java.lang.String value) {
+    this.orderdate = value;
+  }
+
+  /**
+   * Gets the value of the 'productid' field.
+   * @return Product reference.
+   */
+  public java.lang.String getProductid() {
+    return productid;
+  }
+
+
+  /**
+   * Sets the value of the 'productid' field.
+   * Product reference.
+   * @param value the value to set.
+   */
+  public void setProductid(java.lang.String value) {
+    this.productid = value;
+  }
+
+  /**
+   * Gets the value of the 'consumerid' field.
+   * @return Consumer reference.
+   */
+  public java.lang.String getConsumerid() {
+    return consumerid;
+  }
+
+
+  /**
+   * Sets the value of the 'consumerid' field.
+   * Consumer reference.
+   * @param value the value to set.
+   */
+  public void setConsumerid(java.lang.String value) {
+    this.consumerid = value;
   }
 
   /**
@@ -194,10 +242,14 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Message>
     implements org.apache.avro.data.RecordBuilder<Message> {
 
-    /** Message timestamp. */
-    private long timestamp;
-    /** Message content. */
-    private java.lang.String content;
+    /** Product quantity. */
+    private java.lang.String quantity;
+    /** Order date. */
+    private java.lang.String orderdate;
+    /** Product reference. */
+    private java.lang.String productid;
+    /** Consumer reference. */
+    private java.lang.String consumerid;
 
     /** Creates a new Builder */
     private Builder() {
@@ -210,13 +262,21 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
      */
     private Builder(com.redhat.demo.avro.schema.Message.Builder other) {
       super(other);
-      if (isValidValue(fields()[0], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[0].schema(), other.timestamp);
+      if (isValidValue(fields()[0], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[0].schema(), other.quantity);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.content)) {
-        this.content = data().deepCopy(fields()[1].schema(), other.content);
+      if (isValidValue(fields()[1], other.orderdate)) {
+        this.orderdate = data().deepCopy(fields()[1].schema(), other.orderdate);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.productid)) {
+        this.productid = data().deepCopy(fields()[2].schema(), other.productid);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      }
+      if (isValidValue(fields()[3], other.consumerid)) {
+        this.consumerid = data().deepCopy(fields()[3].schema(), other.consumerid);
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
     }
 
@@ -226,100 +286,197 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
      */
     private Builder(com.redhat.demo.avro.schema.Message other) {
       super(SCHEMA$, MODEL$);
-      if (isValidValue(fields()[0], other.timestamp)) {
-        this.timestamp = data().deepCopy(fields()[0].schema(), other.timestamp);
+      if (isValidValue(fields()[0], other.quantity)) {
+        this.quantity = data().deepCopy(fields()[0].schema(), other.quantity);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.content)) {
-        this.content = data().deepCopy(fields()[1].schema(), other.content);
+      if (isValidValue(fields()[1], other.orderdate)) {
+        this.orderdate = data().deepCopy(fields()[1].schema(), other.orderdate);
         fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.productid)) {
+        this.productid = data().deepCopy(fields()[2].schema(), other.productid);
+        fieldSetFlags()[2] = true;
+      }
+      if (isValidValue(fields()[3], other.consumerid)) {
+        this.consumerid = data().deepCopy(fields()[3].schema(), other.consumerid);
+        fieldSetFlags()[3] = true;
       }
     }
 
     /**
-      * Gets the value of the 'timestamp' field.
-      * Message timestamp.
+      * Gets the value of the 'quantity' field.
+      * Product quantity.
       * @return The value.
       */
-    public long getTimestamp() {
-      return timestamp;
+    public java.lang.String getQuantity() {
+      return quantity;
     }
 
 
     /**
-      * Sets the value of the 'timestamp' field.
-      * Message timestamp.
-      * @param value The value of 'timestamp'.
+      * Sets the value of the 'quantity' field.
+      * Product quantity.
+      * @param value The value of 'quantity'.
       * @return This builder.
       */
-    public com.redhat.demo.avro.schema.Message.Builder setTimestamp(long value) {
+    public com.redhat.demo.avro.schema.Message.Builder setQuantity(java.lang.String value) {
       validate(fields()[0], value);
-      this.timestamp = value;
+      this.quantity = value;
       fieldSetFlags()[0] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'timestamp' field has been set.
-      * Message timestamp.
-      * @return True if the 'timestamp' field has been set, false otherwise.
+      * Checks whether the 'quantity' field has been set.
+      * Product quantity.
+      * @return True if the 'quantity' field has been set, false otherwise.
       */
-    public boolean hasTimestamp() {
+    public boolean hasQuantity() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-      * Clears the value of the 'timestamp' field.
-      * Message timestamp.
+      * Clears the value of the 'quantity' field.
+      * Product quantity.
       * @return This builder.
       */
-    public com.redhat.demo.avro.schema.Message.Builder clearTimestamp() {
+    public com.redhat.demo.avro.schema.Message.Builder clearQuantity() {
+      quantity = null;
       fieldSetFlags()[0] = false;
       return this;
     }
 
     /**
-      * Gets the value of the 'content' field.
-      * Message content.
+      * Gets the value of the 'orderdate' field.
+      * Order date.
       * @return The value.
       */
-    public java.lang.String getContent() {
-      return content;
+    public java.lang.String getOrderdate() {
+      return orderdate;
     }
 
 
     /**
-      * Sets the value of the 'content' field.
-      * Message content.
-      * @param value The value of 'content'.
+      * Sets the value of the 'orderdate' field.
+      * Order date.
+      * @param value The value of 'orderdate'.
       * @return This builder.
       */
-    public com.redhat.demo.avro.schema.Message.Builder setContent(java.lang.String value) {
+    public com.redhat.demo.avro.schema.Message.Builder setOrderdate(java.lang.String value) {
       validate(fields()[1], value);
-      this.content = value;
+      this.orderdate = value;
       fieldSetFlags()[1] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'content' field has been set.
-      * Message content.
-      * @return True if the 'content' field has been set, false otherwise.
+      * Checks whether the 'orderdate' field has been set.
+      * Order date.
+      * @return True if the 'orderdate' field has been set, false otherwise.
       */
-    public boolean hasContent() {
+    public boolean hasOrderdate() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-      * Clears the value of the 'content' field.
-      * Message content.
+      * Clears the value of the 'orderdate' field.
+      * Order date.
       * @return This builder.
       */
-    public com.redhat.demo.avro.schema.Message.Builder clearContent() {
-      content = null;
+    public com.redhat.demo.avro.schema.Message.Builder clearOrderdate() {
+      orderdate = null;
       fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'productid' field.
+      * Product reference.
+      * @return The value.
+      */
+    public java.lang.String getProductid() {
+      return productid;
+    }
+
+
+    /**
+      * Sets the value of the 'productid' field.
+      * Product reference.
+      * @param value The value of 'productid'.
+      * @return This builder.
+      */
+    public com.redhat.demo.avro.schema.Message.Builder setProductid(java.lang.String value) {
+      validate(fields()[2], value);
+      this.productid = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'productid' field has been set.
+      * Product reference.
+      * @return True if the 'productid' field has been set, false otherwise.
+      */
+    public boolean hasProductid() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'productid' field.
+      * Product reference.
+      * @return This builder.
+      */
+    public com.redhat.demo.avro.schema.Message.Builder clearProductid() {
+      productid = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'consumerid' field.
+      * Consumer reference.
+      * @return The value.
+      */
+    public java.lang.String getConsumerid() {
+      return consumerid;
+    }
+
+
+    /**
+      * Sets the value of the 'consumerid' field.
+      * Consumer reference.
+      * @param value The value of 'consumerid'.
+      * @return This builder.
+      */
+    public com.redhat.demo.avro.schema.Message.Builder setConsumerid(java.lang.String value) {
+      validate(fields()[3], value);
+      this.consumerid = value;
+      fieldSetFlags()[3] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'consumerid' field has been set.
+      * Consumer reference.
+      * @return True if the 'consumerid' field has been set, false otherwise.
+      */
+    public boolean hasConsumerid() {
+      return fieldSetFlags()[3];
+    }
+
+
+    /**
+      * Clears the value of the 'consumerid' field.
+      * Consumer reference.
+      * @return This builder.
+      */
+    public com.redhat.demo.avro.schema.Message.Builder clearConsumerid() {
+      consumerid = null;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -328,8 +485,10 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
     public Message build() {
       try {
         Message record = new Message();
-        record.timestamp = fieldSetFlags()[0] ? this.timestamp : (java.lang.Long) defaultValue(fields()[0]);
-        record.content = fieldSetFlags()[1] ? this.content : (java.lang.String) defaultValue(fields()[1]);
+        record.quantity = fieldSetFlags()[0] ? this.quantity : (java.lang.String) defaultValue(fields()[0]);
+        record.orderdate = fieldSetFlags()[1] ? this.orderdate : (java.lang.String) defaultValue(fields()[1]);
+        record.productid = fieldSetFlags()[2] ? this.productid : (java.lang.String) defaultValue(fields()[2]);
+        record.consumerid = fieldSetFlags()[3] ? this.consumerid : (java.lang.String) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -362,9 +521,13 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
   @Override public void customEncode(org.apache.avro.io.Encoder out)
     throws java.io.IOException
   {
-    out.writeLong(this.timestamp);
+    out.writeString(this.quantity);
 
-    out.writeString(this.content);
+    out.writeString(this.orderdate);
+
+    out.writeString(this.productid);
+
+    out.writeString(this.consumerid);
 
   }
 
@@ -373,19 +536,31 @@ public class Message extends org.apache.avro.specific.SpecificRecordBase impleme
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
-      this.timestamp = in.readLong();
+      this.quantity = in.readString();
 
-      this.content = in.readString();
+      this.orderdate = in.readString();
+
+      this.productid = in.readString();
+
+      this.consumerid = in.readString();
 
     } else {
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 4; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
-          this.timestamp = in.readLong();
+          this.quantity = in.readString();
           break;
 
         case 1:
-          this.content = in.readString();
+          this.orderdate = in.readString();
+          break;
+
+        case 2:
+          this.productid = in.readString();
+          break;
+
+        case 3:
+          this.consumerid = in.readString();
           break;
 
         default:

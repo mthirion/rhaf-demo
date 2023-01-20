@@ -21,7 +21,12 @@ public class EventConsumer {
     public void consume(ConsumerRecord<Long, Message> record) {
         Long key = record.key(); // Can be `null` if the incoming record has no key
         Message m = (Message)record.value();
-        String content = String.valueOf(m.getContent());
+        String orderdate = m.getOrderdate();
+        String quantity = m.getQuantity();
+        String pref = m.getProductid();
+        String cref = m.getConsumerid();
+
+        String content = "on " + orderdate + " : " + quantity + " products (id = " + pref + ")";
 
         // reset message
         if (key == 1) {
@@ -40,6 +45,7 @@ public class EventConsumer {
         if (key >= last) last=key+1L;
 
         check.remove(key);
+
 
         //System.out.println(String.format("Current Key: %d, Missing messages: %d, Duplicated msg: %d", key, check.size(), duplicated));
         System.out.println(String.format("Key: %d, avro message: %s", key, content) );

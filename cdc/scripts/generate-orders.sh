@@ -1,5 +1,5 @@
-#OC=<path_to_oc
 OC=oc
+#OC=<path_to_oc>
 
 POD=$1
 if [[ -z $POD ]]
@@ -25,7 +25,7 @@ $OC exec $POD -- psql -U postgres -d postgres -c "insert into inventory.orders v
 $OC exec $POD -- psql -U postgres -d postgres -c "insert into inventory.orders values (10018,'2016-04-02',1003,1,106);"
 
 # ------
-
+exit 0
 $OC exec $POD -- psql -U postgres -d postgres -c "insert into inventory.orders values (10019,'2016-04-02',1003,2,106);"
 $OC exec $POD -- psql -U postgres -d postgres -c "insert into inventory.orders values (10020,'2016-04-03',1003,1,105);"
 $OC exec $POD -- psql -U postgres -d postgres -c "insert into inventory.orders values (10021,'2016-04-06',1003,1,106);"

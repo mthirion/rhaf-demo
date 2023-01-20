@@ -5,7 +5,8 @@ curl --location --request POST 'https://kafka-dev-my-bridge-service-staging.apps
 
     "topics": [
 
-       "event-sr"
+       "event-sr",
+       "event-sr2"
 
     ]
 

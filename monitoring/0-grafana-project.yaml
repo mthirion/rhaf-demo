@@ -1,0 +1,20 @@
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: ""
+    openshift.io/requester: opentlc-mgr
+    openshift.io/sa.scc.mcs: s0:c26,c20
+    openshift.io/sa.scc.supplemental-groups: 1000690000/10000
+    openshift.io/sa.scc.uid-range: 1000690000/10000
+  labels:
+    kubernetes.io/metadata.name: grafana-system
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: v1.24
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: v1.24
+  name: grafana-system
+spec:
+  finalizers:
+  - kubernetes

@@ -12,5 +12,5 @@ fi
 
 $OC exec $POD -- psql -U postgres -d postgres -c "select * from pg_catalog.pg_tables where schemaname = 'inventory';"
 $OC exec $POD -- psql -U postgres -d postgres -c "select * from inventory.orders;"
-
+$OC exec $POD -- psql -U postgres -d postgres -c "select * from inventory.products;"
 

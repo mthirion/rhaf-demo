@@ -1,0 +1,26 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    app: webservice
+    app.kubernetes.io/component: webservice
+    app.kubernetes.io/instance: git-webservice
+    app.kubernetes.io/managed-by: gitlab-operator
+    app.kubernetes.io/name: git
+    app.kubernetes.io/part-of: gitlab
+    chart: webservice-6.7.3
+    gitlab.com/webservice-name: default
+    heritage: Helm
+    release: git
+  name: gitlab
+  namespace: gitlab-system
+spec:
+  port:
+    targetPort: http-workhorse
+  to:
+    kind: Service
+    name: git-webservice-default
+    weight: 100
+  wildcardPolicy: None
