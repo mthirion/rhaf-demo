@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kafkauser
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: kafka-dev
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: kafka-user
+    repoURL: https://<git_url>.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      selfHeal: true
