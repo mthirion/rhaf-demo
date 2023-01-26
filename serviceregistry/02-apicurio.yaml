@@ -1,0 +1,16 @@
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry
+metadata:
+  name: service-registry
+spec:
+  configuration:
+    persistence: sql
+    sql:
+      dataSource:
+        password: postgrespw
+        url: 'jdbc:postgresql://postgresql.apicurio.svc:5432/registry'
+        userName: postgresuser
+  deployment:
+    host: >-
+      service-registry.apps.cluster-qrc9q.qrc9q.sandbox1217.opentlc.com.router-default.apps.cluster-qrc9q.qrc9q.sandbox1217.opentlc.com
+

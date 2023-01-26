@@ -5,7 +5,7 @@ POD=$1
 
 if [[ -z $POD ]]
 then
-        echo "pod name not specified";
+        echo "database pod name must be specified as parameter";
         exit 1
 fi
 
