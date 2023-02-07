@@ -1,4 +1,4 @@
-# Resource install for Operato
+# Resource install for the first Operator flow
 
 ## Architecture
 TODO

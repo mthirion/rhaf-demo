@@ -1,4 +1,4 @@
-# First developer flow
+# Resource install for the first developer flow
 
 
 ## Architecture
