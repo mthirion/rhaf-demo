@@ -1,17 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafkatopic
+  name: amqstreams-dev
   namespace: openshift-gitops
 spec:
   destination:
-    namespace: kafka-dev
+    namespace: <namespace>
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: kafka-topic
-    repoURL: https://<git_url>.git
+    helm:
+      valueFiles:
+      - values.yaml
+    path: gitops/opsteam/dev
+    repoURL: https://github.com/mthirion/rhaf-demo.git
     targetRevision: HEAD
-  syncPolicy:
-    automated:
-      selfHeal: true
+  syncPolicy: {}

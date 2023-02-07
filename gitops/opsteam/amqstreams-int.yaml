@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafka
+  name: amqstreams-int
   namespace: openshift-gitops
 spec:
   destination:
@@ -12,7 +12,7 @@ spec:
     helm:
       valueFiles:
       - values.yaml
-    path: kafka
-    repoURL: https://<git_url>.git
+    path: gitops/opsteam/int
+    repoURL: https://github.com/mthirion/rhaf-demo.git
     targetRevision: HEAD
   syncPolicy: {}
