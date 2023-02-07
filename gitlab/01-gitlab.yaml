@@ -1,7 +1,7 @@
 apiVersion: apps.gitlab.com/v1beta1
 kind: GitLab
 metadata:
-  name: git
+  name: gitlab
   namespace: gitlab-system
 spec:
   chart:
@@ -10,10 +10,10 @@ spec:
         install: false
       global:
         hosts:
-          domain: apps.<cluster>.opentlc.com
+          domain: apps-crc.testing
           hostSuffix: null
         ingress:
           configureCertmanager: false
           tls:
             secretName: null
-    version: 6.7.3
+    version: 6.8.1

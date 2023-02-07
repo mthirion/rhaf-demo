@@ -7,7 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/instance: kafka
   name: my-cluster
-  namespace: kafka-dev
 spec:
   entityOperator:
     tlsSidecar: {}

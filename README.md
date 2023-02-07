@@ -49,24 +49,40 @@ Finally, the operator will perform day2 operations such as:
 ![workflow](documentation/images/general_scenario.png?raw=true)
 
 ## Installation
-### Developer's cases
 
-[developer install 1](documentation/developer_i1.md)  
-[developer install 2](documentation/developer_i2.md)  
+### Namespaces
+The following Openshift Prijects are (or can be) used:  
+ - demo-dev : represent a development environment
+ - demo-int : represent an integration environment to demo the software lifecycle with pipelines
+ - openshift-gitops: will contain Argocd-based Openshift Gitops servers
+ - elastic-system : will contain ElasticSearch and Kibana
+ - gitlab-system : will contain a gitlab server that can be used as the repository fot Gitops  
+
+ 
+![namespaces](documentation/images/namespaces.png?raw=true)
+
+### Developer's resources
+
+[developer install case1](documentation/developer_i1.md)  
+[developer install case2](documentation/developer_i2.md)  
   
-### Operator's cases
+### Operator's resources
 
-[Operator install_1](documentation/operator_i1.md)  
-[Operator install_2](documentation/operator_i2.md)  
+[Operator install part1](documentation/operator_i1.md)  
+[Operator install part2](documentation/operator_i2.md)  
 
 
 ## Scenario
 ### Developer's cases
 
-[developer case1](documentation/developer_s1.md)  
-[developer case2](documentation/developer_s2.md)  
+[developer flow case1](documentation/developer_s1.md)  
+[developer flow case2](documentation/developer_s2.md)  
   
 ### Operator's cases
 
 [Operator day1](documentation/operator_s1.md)  
 [Operator day2](documentation/operator_s2.md)  
+
+### Full automation
+
+[gitops](documentation/gitops.md)  
