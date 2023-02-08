@@ -53,12 +53,14 @@ Finally, the operator will perform day2 operations such as:
 ### Namespaces
 The following Openshift Prijects are (or can be) used:  
  - demo-dev : represent a development environment
- - demo-int : represent an integration environment to demo the software lifecycle with pipelines
  - openshift-gitops: will contain Argocd-based Openshift Gitops servers
  - elastic-system : will contain ElasticSearch and Kibana
  - gitlab-system : will contain a gitlab server that can be used as the repository fot Gitops  
 
+In addition:
+- demo-int & demo-uat : will be used to demo the software lifecycle promotion  
  
+
 ![namespaces](documentation/images/namespaces.png?raw=true)
 
 ### Developer's resources
@@ -83,6 +85,6 @@ The following Openshift Prijects are (or can be) used:
 [Operator day1](documentation/operator_s1.md)  
 [Operator day2](documentation/operator_s2.md)  
 
-### Full automation
+### Fully automated install
 
 [gitops](documentation/gitops.md)  

@@ -40,16 +40,4 @@ Structure:
        |- adminteam
 
 
-
-## Gitlab
-ArgoCD synchronizes some content from a git-based repository with a Kubernetes namespace.  
-The content of the gitops/ sub-directory of the current github repository can be used.  
-Alternatively, the gitlab/ directory can be used to install a Gitlab server.  
-
-_oc apply -f gitlab/0-gitlab-project.yaml_  
-_oc apply -f gitlab/00-gitlab-operator.yaml_  
-
-Edit the version and the Openshift domain name in the gitlab/01-gitlab.yaml file then:  
-_oc apply -f gitlab/01-gitlab.yaml_  
-
 ## Troubeshooting
