@@ -1,0 +1,7 @@
+resources:
+- envs/demo-dev.yaml
+- envs/demo-int.yaml
+- envs/elastic-system.yaml
+- envs/role-binding-dev.yaml
+- envs/role-binding-int.yaml
+- envs/role-binding-eck.yaml
