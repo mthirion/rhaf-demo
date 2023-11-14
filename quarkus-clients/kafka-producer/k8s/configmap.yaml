@@ -5,5 +5,5 @@ metadata:
   labels:
     app: kafka-producer
 data:
-  KAFKA_BOOTSTRAP_SERVERS: my-cluster-kafka-bootstrap:9094
+  KAFKA_BOOTSTRAP_SERVERS: kafkacluster-kafka-bootstrap:9092
   PRODUCER_TICK_FREQUENCY: "2000"

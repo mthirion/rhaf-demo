@@ -37,7 +37,6 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
   name: my-connect-cluster1
-  namespace: kafka-dev
 spec:
   authentication:
     passwordSecret:
@@ -48,7 +47,7 @@ spec:
   bootstrapServers: my-cluster-kafka-bootstrap:9094
   build:
     output:
-      image: image-registry.openshift-image-registry.svc:5000/kafka-dev/debezium-connect-postgres:1.9
+      image: image-registry.openshift-image-registry.svc:5000/cdc-demo/debezium-connect-postgres:1.9
       type: docker
     plugins:
     - artifacts:

@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: consumerlag-alert
+spec:
+  groups:
+  - name: kafkaperformance
+    rules:
+    - alert: ConsumerLagAlert
+      expr: sum(kafka_consumergroup_lag{consumergroup=~"mygroup",topic=~"mytest", namespace=~"akbank"}) by (consumergroup,partition,topic) > 10

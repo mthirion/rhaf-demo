@@ -28,7 +28,7 @@ spec:
       - image: quay.io/debezium/example-postgres:1.9
         name: postgres   
         volumes:
-          - "postgres:/var/lib/postgresql/data"        
+                - "postgres:/var/lib/postgresql/data:z"        
         env:
         - name: POSTGRES_ROOT_PASSWORD
           value: debezium

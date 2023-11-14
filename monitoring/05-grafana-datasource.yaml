@@ -1,0 +1,20 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: ocp-prom
+  namespace: openshift-user-workload-monitoring
+spec:
+  datasources:
+  - access: proxy
+    editable: true
+    isDefault: true
+    jsonData:
+      httpHeaderName1: Authorization
+      timeInterval: 5s
+      tlsSkipVerify: true
+    name: ocp-prom
+    secureJsonData:
+      httpHeaderValue1: Bearer $GRAFANA_TOKEN
+    type: prometheus
+    url: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+  name: ocp-prom.yaml

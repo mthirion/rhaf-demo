@@ -2,6 +2,6 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaFolder
 metadata:
   name: kafka
-  namespace: grafana-system
+  namespace: openshift-user-workload-monitoring
 spec:
   title: Kafka

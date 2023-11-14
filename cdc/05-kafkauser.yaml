@@ -7,7 +7,6 @@ metadata:
   labels:
     strimzi.io/cluster: my-cluster
   name: debezium-user
-  namespace: kafka-dev
 spec:
   authentication:
     type: scram-sha-512

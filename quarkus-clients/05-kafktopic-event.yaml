@@ -3,8 +3,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 metadata:
   name: event
   labels:
-    strimzi.io/cluster: my-cluster
-  namespace: kafka-dev
+    strimzi.io/cluster: kafkacluster
 spec:
   partitions: 3
   replicas: 3

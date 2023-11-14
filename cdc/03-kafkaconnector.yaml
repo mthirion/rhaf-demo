@@ -7,14 +7,14 @@ metadata:
   labels:
     strimzi.io/cluster: my-connect-cluster1
   name: my-kafka-connector
-  namespace: kafka-dev
 spec:
   class: io.debezium.connector.postgresql.PostgresConnector
   config:
     database.dbname: postgres
-    database.hostname: postgres.kafka-dev.svc
+    database.hostname: postgres.cdc-demo.svc
     database.password: postgres
     database.port: 5432
     database.server.name: inventory
     database.user: postgres
+    table.blacklist: 'inventory.products_on_hand, products_on_hand'
   tasksMax: 1

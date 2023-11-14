@@ -4,6 +4,7 @@ metadata:
   labels:
     app: grafana
   name: grafana-dashboard-from-url
-  namespace: grafana-system
+  namespace: openshift-user-workload-monitoring
 spec:
+  customFolderName: kafka
   url: https://raw.githubusercontent.com/integr8ly/grafana-operator/master/deploy/examples/remote/grafana-dashboard.json

@@ -9,12 +9,12 @@ metadata:
     openshift.io/sa.scc.supplemental-groups: 1000690000/10000
     openshift.io/sa.scc.uid-range: 1000690000/10000
   labels:
-    kubernetes.io/metadata.name: grafana-system
+    kubernetes.io/metadata.name: openshift-user-workload-monitoring
     pod-security.kubernetes.io/audit: restricted
     pod-security.kubernetes.io/audit-version: v1.24
     pod-security.kubernetes.io/warn: restricted
     pod-security.kubernetes.io/warn-version: v1.24
-  name: grafana-system
+  name: openshift-user-workload-monitoring
 spec:
   finalizers:
   - kubernetes

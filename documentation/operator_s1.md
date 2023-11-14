@@ -1,23 +1,12 @@
-# First Operator scenario (Day 1 Operations)
+# First Operation scenario (Day 1 Operations)
 
-## Preparation
-Pre-install the amqstreams metrics resources.
+## Provisioning AMQStreams via the Operator
 
-_oc apply -f amqstreams/01-kafka-metrics.yaml_ -n [demo-dev]
-_oc apply -f amqstreams/03-kafka-monitor.yaml_  -n [demo-dev]
-
-## Installing AMQStreams
-
-The installation of an Openshift Operator can be done "as-code".  
-_oc apply -f amqstreams/00-amqstreams-operator.yaml_  
-
-The installation of the AMQ Streams cluster can also be done "as-code". 
+Either use the Openshift console to create a Kafka cluster or execute:  
+_oc apply -f amqstreams/02-amqstreams-kafka.yaml -n [demo-dev]_  
 
 Notice that the Operator is aware of the AMQ Streams topology.  
 Open the web console in the [demo-dev] namespace on the 'pods' tab.  
-Execute:  
-_oc apply -f amqstreams/02-amqstreams-kafka.yaml_  -n [demo-dev]  
-
 You'll observe that the Operators:  
  - install the zookeeper cluster first
  - waits fo the control plane to be up, running and healthy
